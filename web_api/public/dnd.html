@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>D-n-D</title>
+  <style>
+    .box {
+      width: 50px;
+      height: 50px;
+      border: 1px solid gray;
+      display: inline-block;
+      margin: 0 20px;
+    }
+
+    .inner-box {
+      width: 20px;
+      height: 20px;
+      border: 1px solid gray;
+      margin: 0 auto;
+    }
+
+    .drag-enter {
+      border-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Drag-n-Drop</h1>
+
+  <div id="container">
+    <div id="box1" class="box" draggable="true" data-value="0">
+      0
+    </div>
+
+    <div id="box2" class="box" draggable="true" data-value="1">
+      1
+    </div>
+
+    <div id="box3" class="box" draggable="true" data-value="2">
+      2
+    </div>
+  </div>
+
+  <script>
+    addEventListener('DOMContentLoaded', () => {
+      const containerElement = document.querySelector('#container');
+      ['dragstart', 'drag', 'dragend'].forEach((eventName) => {
+        containerElement.addEventListener(eventName, handlers[eventName]);
+      });
+
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+        containerElement.addEventListener(eventName, handlers[eventName]);
+      });
+    });
+
+    const getBoxIndex = (boxElement) => parseInt(boxElement.innerText);
+
+    const printEventLog = (boxElement, eventName, isTarget) => {
+      const boxIndex = getBoxIndex(boxElement);
+      const prefix = !isTarget
+        ? 'draggable'
+        : 'drop-target';
+
+      console.log(`${prefix}-${boxIndex} ${eventName}`);
+    };
+
+    const handlers = {
+      dragstart: (e) => {
+        e.dataTransfer.setData(
+          'text/uri-list',
+          e.target.dataset.value
+        );
+
+        printEventLog(e.target, 'dragstart', false);
+      },
+
+      drag: (e) => {
+        // printEventLog(e.target, 'drag', false);
+      },
+
+      dragend: (e) => {
+        printEventLog(e.target, 'dragend', false);
+      },
+
+      dragenter: (e) => {
+        e.preventDefault();
+
+        e.target.classList.add('drag-enter');
+
+        printEventLog(e.target, 'dragenter', true);
+      },
+      dragover: (e) => {
+        e.preventDefault();
+
+        // printEventLog(e.target, 'dragover', true);
+      },
+      dragleave: (e) => {
+        printEventLog(e.target, 'dragleave', true);
+
+        e.target.classList.remove('drag-enter');
+      },
+      drop: (e) => {
+        printEventLog(e.target, 'drop', true);
+
+        const data = e.dataTransfer.getData('text/uri-list');
+        e.target.innerText += data;
+
+        e.target.classList.remove('drag-enter');
+      }
+    };
+
+  </script>
+</body>
+
+</html>

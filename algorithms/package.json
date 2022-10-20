@@ -1,0 +1,14 @@
+{
+  "name": "algorithms",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@plotex/render-image": "^1.0.21",
+    "plot": "^1.0.22"
+  },
+  "scripts": {
+    "sort:tests": "node ./sort/test/runTests.js",
+    "sort:merge": "node ./sort/mergeSort.js",
+    "sort:quick": "node ./sort/quickSort.js"
+  }
+}

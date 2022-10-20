@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>FormData</title>
+</head>
+
+<body>
+  <h1>FormData API</h1>
+  <form id="subscription">
+    <div id="message"></div>
+
+    <div class="field">
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        name="name"
+        placeholder="Enter your fullname"
+        required
+      />
+      <small></small>
+    </div>
+
+    <div class="field">
+      <label for="email">Email:</label>
+      <input
+        type="text"
+        name="email"
+        placeholder="Enter your email address"
+        required
+      />
+      <small></small>
+    </div>
+
+    <div class="field">
+      <button type="submit" class="full" id="submit">Subscribe</button>
+    </div>
+  </form>
+
+  <script>
+    const ECHO_SERVER_URL = 'https://httpbin.org/anything';
+    const buttonElement = document.querySelector('#submit');
+    const formElement = document.querySelector('#subscription');
+    const messageElement = document.querySelector('#message');
+
+    buttonElement.addEventListener('click', (e) => {
+      e.preventDefault();
+      subscribe();
+    });
+
+    const getFormData = () => new FormData(formElement);
+
+    const subscribe = async () => {
+      try {
+        const formData = getFormData();
+        debugger;
+        const responce = await fetch(ECHO_SERVER_URL, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await responce.json();
+
+        showMessage(
+          result,
+          responce.status === 200
+            ? 'ok'
+            : 'error'
+        );
+
+      } catch(error) {
+        showMessage(error, 'error');
+        // messageElement.
+      }
+    };
+
+    const showMessage = (message, type) => {
+      messageElement.innerText = `${message}, ${type}`;
+    };
+
+  </script>
+</body>
+
+</html>

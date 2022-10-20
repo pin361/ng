@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>CSS-Grid</title>
+  <style>
+    .container {
+      display: inline-grid;
+      width: 300px;
+      grid-template-rows: 100px 200px;
+      grid-area: 2 / -1;
+    }
+
+    .child {
+      border: 1px solid gray;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="child">1</div>
+    <div class="child">2</div>
+  </div>
+</body>
+
+</html>

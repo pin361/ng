@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fetch</title>
+</head>
+
+<body>
+
+  <h1>Fetch API</h1>
+  <button onclick="fetchData()">
+    fetch Data
+  </button>
+  <button onclick="fetchPhoto()">
+    fetch Photo
+  </button>
+  <button onclick="fetchError()">
+    fetch Error
+  </button>
+  <hr>
+  <div id="message">
+    Message...
+  </div>
+
+  <script>
+
+    const TEST_SERVER_URL = 'https://jsonplaceholder.typicode.com';
+    const TODOS_URL = `${TEST_SERVER_URL}/todos`;
+    const PHOTOS_URL = `${TEST_SERVER_URL}/photos`;
+    const getTodoUrl = (id) => `${TODOS_URL}/${id}`;
+    const getPhotoUrl = (id) => `${PHOTOS_URL}/${id}`;
+    const getErrorUrl = () => `${TEST_SERVER_URL}/fakeAction`;
+
+    const fetchData = () => testFetch(getTodoUrl(10));
+    const fetchPhoto = () => testFetch(getPhotoUrl(10));
+    const fetchError = () => testFetch(getErrorUrl());
+
+    const testFetch = (url) => {
+      fetch(
+        url,
+        {
+          contentType: ''
+        })
+        .then((responce) => {
+          if(!responce.ok) {
+            return Promise.reject(
+              `Error responce, status: ${responce.status}`
+            );
+          }
+
+          console.log(
+            'contentType',
+            responce.headers.get('Content-Type')
+          );
+
+          return responce.json();
+        })
+        .then((data) => {
+          showMessage(JSON.stringify(data));
+        })
+        .catch((err) => {
+          const message = err.message ?? err;
+          showMessage(message, true);
+        });
+    };
+
+    const showMessage = (message, isError) => {
+      const messageElement = document.getElementById('message');
+      messageElement.innerText = isError
+        ? `Error: ${message}`
+        : message;
+    };
+
+  </script>
+</body>
+
+</html>
