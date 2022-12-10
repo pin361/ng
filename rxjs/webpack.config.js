@@ -1,3 +1,4 @@
+const { exec } = require('child_process');
 const path = require('path');
 
 module.exports = {
@@ -12,6 +13,16 @@ module.exports = {
       },
     ],
   },
+  plugins: [{
+    apply: (compiler) => {
+      compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+        exec('node ./dist/main.js', (err, stdout, stderr) => {
+          stdout && process.stdout.write(stdout);
+          stderr && process.stderr.write(stderr);
+        });
+      })
+    }
+  }],
   resolve: {
     extensions: ['.ts', '.js'],
   },
